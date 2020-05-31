@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CodeTest.Agl.Api.Models;
 
 namespace CodeTest.Agl.Api.Interfaces
 {
     public interface IPetsService
     {
-        Task GetCatsByGenderOfOwner();
+        Task<List<CatsSortedResult>> GetCatsByGenderOfOwner();
     }
 }

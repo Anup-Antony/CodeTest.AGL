@@ -17,8 +17,8 @@ namespace CodeTest.Agl.Api.Controllers
         [Route("catsSorted")]
         public async Task<IActionResult> GetCatsSortedByOwnerGender()
         {
-            var res = _petsService.GetCatsByGenderOfOwner();
-            return Ok();
+            var res = await _petsService.GetCatsByGenderOfOwner();
+            return Ok(res);
         }
     }
 }
