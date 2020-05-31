@@ -13,7 +13,7 @@ namespace CodeTest.Agl.Api.Services
         }
         public async Task GetCatsByGenderOfOwner()
         {
-            await _peopleHttpClient.GetPeopleData();
+            var petsOwners = await _peopleHttpClient.GetPeopleData();
         }
     }
 }

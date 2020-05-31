@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CodeTest.Agl.Api.Configuration;
+using CodeTest.Agl.Api.Models;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace CodeTest.Agl.Api.Services
 {
@@ -18,10 +21,12 @@ namespace CodeTest.Agl.Api.Services
             _peopleApiSettings = peopleApiSettings;
         }
 
-        public async Task GetPeopleData()
+        public async Task<List<PetsOwner>> GetPeopleData()
         {
             var response = await _httpClient.GetAsync(_peopleApiSettings.CurrentValue.ApiEndpoint);
             var data = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<PetsOwner>>(data);
+            return result;
         }
     }
 }
