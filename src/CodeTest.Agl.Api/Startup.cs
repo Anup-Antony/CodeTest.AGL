@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CodeTest.Agl.Api.Configuration;
 using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Services;
@@ -25,6 +26,11 @@ namespace CodeTest.Agl.Api
             services.AddSingleton<IPetsService, PetsService>();
             services.AddHttpClient< PeopleHttpClient>();
             services.Configure<PeopleApiSettings>(Configuration.GetSection("PeopleApiSettings"));
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(
+                    new JsonStringEnumConverter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
