@@ -1,3 +1,4 @@
+using CodeTest.Agl.Api.Configuration;
 using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,7 @@ namespace CodeTest.Agl.Api
             services.AddControllers();
             services.AddSingleton<IPetsService, PetsService>();
             services.AddHttpClient< PeopleHttpClient>();
+            services.Configure<PeopleApiSettings>(Configuration.GetSection("PeopleApiSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

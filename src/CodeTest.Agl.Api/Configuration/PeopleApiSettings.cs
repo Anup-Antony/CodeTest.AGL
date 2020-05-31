@@ -2,6 +2,7 @@
 {
     public class PeopleApiSettings
     {
+        public string BaseUrl { get; set; }
         public string ApiEndpoint { get; set; }
     }
 }

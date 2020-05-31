@@ -11,9 +11,9 @@ namespace CodeTest.Agl.Api.Services
         {
             _peopleHttpClient = peopleHttpClient;
         }
-        public Task GetCatsByGenderOfOwner()
+        public async Task GetCatsByGenderOfOwner()
         {
-            throw new System.NotImplementedException();
+            await _peopleHttpClient.GetPeopleData();
         }
     }
 }
