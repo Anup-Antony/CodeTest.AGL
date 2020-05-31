@@ -22,15 +22,15 @@ namespace CodeTest.Agl.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter());
+                });
             services.AddSingleton<IPetsService, PetsService>();
             services.AddHttpClient< PeopleHttpClient>();
             services.Configure<PeopleApiSettings>(Configuration.GetSection("PeopleApiSettings"));
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(
-                    new JsonStringEnumConverter());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
