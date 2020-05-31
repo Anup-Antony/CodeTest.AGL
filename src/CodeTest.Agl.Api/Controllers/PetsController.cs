@@ -3,6 +3,7 @@ using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CodeTest.Agl.Api.Controllers
 {
@@ -10,9 +11,11 @@ namespace CodeTest.Agl.Api.Controllers
     public class PetsController: Controller
     {
         private readonly IPetsService _petsService;
-        public PetsController(IPetsService petsService)
+        private readonly ILogger<PetsController> _logger;
+        public PetsController(IPetsService petsService, ILogger<PetsController> logger)
         {
             _petsService = petsService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace CodeTest.Agl.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<CatsSortedResult>> GetCatsSortedByOwnerGender()
         {
+            _logger.LogInformation("Getting cats by owner gender...");
             var res = await _petsService.GetCatsByGenderOfOwner();
             return Ok(res);
         }
