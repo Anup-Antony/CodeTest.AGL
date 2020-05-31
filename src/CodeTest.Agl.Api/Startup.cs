@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using CodeTest.Agl.Api.Configuration;
 using CodeTest.Agl.Api.Interfaces;
@@ -7,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace CodeTest.Agl.Api
 {
@@ -31,6 +35,19 @@ namespace CodeTest.Agl.Api
             services.AddSingleton<IPetsService, PetsService>();
             services.AddHttpClient< PeopleHttpClient>();
             services.Configure<PeopleApiSettings>(Configuration.GetSection("PeopleApiSettings"));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Code Test Agl Api", 
+                    Version = "v1",
+                    Description = "A Web API to categorize pets and their owners."
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +67,13 @@ namespace CodeTest.Agl.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Test Agl Api");
+                c.RoutePrefix = string.Empty;
             });
         }
     }
