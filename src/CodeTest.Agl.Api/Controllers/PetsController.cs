@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Models;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace CodeTest.Agl.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<CatsSortedResult>> GetCatsSortedByOwnerGender()
+        public async Task<ActionResult<List<CatsSortedResult>>> GetCatsSortedByOwnerGender()
         {
             _logger.LogInformation("Getting cats by owner gender...");
             var res = await _petsService.GetCatsByGenderOfOwner();
