@@ -4,6 +4,7 @@ using CodeTest.Agl.Api.Constants;
 using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Models;
 using CodeTest.Agl.Api.Services;
+using CodeTest.Agl.Api.Tests.TestDataBuilder;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NSubstitute;
@@ -44,14 +45,51 @@ namespace CodeTest.Agl.Api.Tests
         [Fact]
         public async Task NoCategorizationWhenPeopleApiReturnsEmpty()
         {
-            var json = "[]";
-            var peopleApiResponse = JsonConvert.DeserializeObject<List<PetsOwner>>(json);
+            var peopleApiResponse = PeopleApiResponseBuilder.GiveEmptyResponse().Build();
 
             _peopleHttpClient.GetPeopleData().Returns(peopleApiResponse);
             var result = await _petsService.GetCatsByGenderOfOwner();
 
             result.Count.Should().Be(0);
 
+        }
+
+        [Fact]
+        public async Task SuccessfullyCategorizeCatsByGenderOfOwner()
+        {
+            var peopleApiResponse = PeopleApiResponseBuilder.GiveEmptyResponse()
+                .AddMaleOwnerWithPet(PetType.Cat, "Garfield")
+                .AddFemaleOwnerWithPet(PetType.Cat, "Kyla")
+                .AddFemaleOwnerWithPet(PetType.Cat, "Jenny")
+                .Build();
+
+            _peopleHttpClient.GetPeopleData().Returns(peopleApiResponse);
+            var result = await _petsService.GetCatsByGenderOfOwner();
+
+            result[0].OwnerGender.Should().Be(Gender.Male);
+            result[0].PetNames.Should().NotBeEmpty();
+            result[0].PetNames.Count.Should().Be(1);
+
+            result[1].OwnerGender.Should().Be(Gender.Female);
+            result[1].PetNames.Should().NotBeEmpty();
+            result[1].PetNames.Count.Should().Be(2);
+        }
+
+        [Fact]
+        public async Task NoMaleOwnerWithCats()
+        {
+            var peopleApiResponse = PeopleApiResponseBuilder.GiveEmptyResponse()
+                .AddMaleOwnerWithPet(PetType.Dog, "Jimmy")
+                .AddMaleOwnerWithPet(PetType.Fish, "Nemo")
+                .AddFemaleOwnerWithPet(PetType.Cat, "Kyla")
+                .Build();
+
+            _peopleHttpClient.GetPeopleData().Returns(peopleApiResponse);
+            var result = await _petsService.GetCatsByGenderOfOwner();
+
+            result.Count.Should().Be(1);
+            result[0].OwnerGender.Should().Be(Gender.Female);
+            result[0].PetNames.Should().NotBeEmpty();
         }
     }
 }
