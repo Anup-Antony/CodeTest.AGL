@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeTest.Agl.Api.Constants;
@@ -10,9 +9,9 @@ namespace CodeTest.Agl.Api.Services
 {
     public class PetsService : IPetsService
     {
-        private readonly PeopleHttpClient _peopleHttpClient;
+        private readonly IPeopleHttpClient _peopleHttpClient;
 
-        public PetsService(PeopleHttpClient peopleHttpClient)
+        public PetsService(IPeopleHttpClient peopleHttpClient)
         {
             _peopleHttpClient = peopleHttpClient;
         }

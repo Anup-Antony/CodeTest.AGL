@@ -34,7 +34,7 @@ namespace CodeTest.Agl.Api
                         new JsonStringEnumConverter());
                 });
             services.AddSingleton<IPetsService, PetsService>();
-            services.AddHttpClient< PeopleHttpClient>();
+            services.AddHttpClient<IPeopleHttpClient, PeopleHttpClient>();
             services.Configure<PeopleApiSettings>(Configuration.GetSection("PeopleApiSettings"));
             services.AddSwaggerGen(c =>
             {

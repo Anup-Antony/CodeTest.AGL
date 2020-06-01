@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CodeTest.Agl.Api.Configuration;
+using CodeTest.Agl.Api.Interfaces;
 using CodeTest.Agl.Api.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace CodeTest.Agl.Api.Services
 {
-    public class PeopleHttpClient
+    public class PeopleHttpClient : IPeopleHttpClient
     {
         private readonly HttpClient _httpClient;
         private readonly IOptionsMonitor<PeopleApiSettings> _peopleApiSettings;
